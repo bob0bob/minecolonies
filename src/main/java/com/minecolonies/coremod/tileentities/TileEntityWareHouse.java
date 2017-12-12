@@ -67,17 +67,18 @@ public class TileEntityWareHouse extends TileEntityColonyBuilding
      * @return the position or null.
      */
     @Nullable
+    @Override
     public BlockPos getPositionOfChestWithItemStack(@NotNull final Predicate<ItemStack> itemStackSelectionPredicate)
     {
         if (getBuilding() != null)
         {
             Set<TileEntity> tileEntities = getBuilding().getAdditionalCountainers().stream().map(pos -> getWorld().getTileEntity(pos)).collect(Collectors.toSet());
-            tileEntities.removeIf(t -> t == null);
+            tileEntities.removeIf(Objects::nonNull);
             tileEntities.add(this);
 
             return tileEntities.stream()
                      .filter(tileEntity -> InventoryUtils.hasItemInProvider(tileEntity, itemStackSelectionPredicate))
-                     .map(tileEntity -> tileEntity.getPos())
+                     .map(TileEntity::getPos)
                      .findFirst().orElse(null);
         }
 

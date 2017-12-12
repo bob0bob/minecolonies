@@ -504,10 +504,13 @@ public abstract class AbstractEntityAIBasic<J extends AbstractJob> extends Abstr
                 }
 
                 //Takes one Stack from the hut if existent
-                if (isInHut(deliveredItemStack)  && !walkToBuilding())
+                if (isInHut(deliveredItemStack))
                 {
-                    getOwnBuilding().markRequestAsAccepted(worker.getCitizenData(), firstDeliverableRequest.getToken());
-                    return NEEDS_ITEM;
+                    if(!walkToBuilding())
+                    {
+                        getOwnBuilding().markRequestAsAccepted(worker.getCitizenData(), firstDeliverableRequest.getToken());
+                        return NEEDS_ITEM;
+                    }
                 }
                 else
                 {
